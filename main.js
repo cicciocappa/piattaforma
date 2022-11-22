@@ -4,6 +4,8 @@ import {Renderer} from './src/Renderer.js'
 console.log("Loading assets...");
 
 await Assets.load();
-Renderer.init(Assets, Game);
+// spostare sotto alla fine
 Game.init();
+Renderer.init(Assets, Game);
+
 Game.start();

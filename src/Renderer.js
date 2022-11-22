@@ -191,11 +191,35 @@ export const Renderer = {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         
-        for (let i=0;i<Game.layers.length;++i){
-            let xpos = i*4;
-            let ypos = 0;
+        for (let k=0;k<Game.layers.length;++k){
+            const xc = Math.floor(Game.camera.x*Game.layers[k].parallax);
+            const yc = Math.floor(Game.camera.y*Game.layers[k].parallax);
+            const xtile = Math.floor(xc / 32);
+            const xpos = xc % 32;
+            const ytile = Math.floor(yc / 32);
+            const ypos = yc % 32;
+
+            if (xtile != Game.oxtile[k] || ytile != Game.oytile[k]) {
+                const data = [];
+                for (let i = 0; i < 21; i++) {
+                    for (let j = 0; j < 16; j++) {
+                        const n = Game.layers[k].data[80 * (ytile + j) + xtile+i];
+
+                        data.push(n, n, n, n, n, n);
+
+
+
+                    }
+                }
+                let fd = new Float32Array(data);
+               
+                gl.bufferSubData(gl.ARRAY_BUFFER,8064 * 4 + 2016 * 4 * k, fd);
+                Game.oxtile[k] = xtile;
+                Game.oytile[k] = ytile;
+            }
+
             gl.uniform2f(this.locations.get('tile_delta'), -xpos/320,  ypos /240);		
-            gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 0, 8064 * 4 + i* 2016 * 4 );
+            gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 0, 8064 * 4 + k* 2016 * 4 );
             gl.drawArrays(gl.TRIANGLES, 0, 6 * 21 * 16);
         }
         
