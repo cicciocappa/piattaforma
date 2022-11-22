@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="c" width="512" height="512">
+
+    </canvas>
+    <script>
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const imageData = ctx.createImageData(512, 512);
+
+const putPixel = (x,y,col) => {
+
+    const i = x * 4 + 512 * 4 * y;
+  imageData.data[i + 0] = col.r;       // R value
+  imageData.data[i + 1] = col.g;         // G value
+  imageData.data[i + 2] = col.b;        // B value
+  imageData.data[i + 3] = 255;      // A value
+
+}
+
+// color
+const brown = {r:160,g:80,b:40};
+const green = {r:20,g:160,b:60};
+const darkgreen = {r:10,g:80,b:30};
+
+const w = 32;
+const h = 32;
+
+let posx = 0;
+let posy = 0;
+// pos 0, empty
+
+// pos 1, full ground
+posx+=w;
+for (let y=0;y<h;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+posx+=w;
+// pos 2, full ground walkable
+for (let y=0;y<h/8;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, green);
+    }
+}
+for (let x=0;x<w;x++){
+        putPixel(x+posx,h/8+posy, darkgreen);
+    }
+for (let y=h/8+1;y<h;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+
+posx+=w;
+// pos3, half ground
+for (let y=h/2;y<h;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+
+posx+=w;
+// pos4, half ground walkable
+for (let y=h/2;y<5*h/8;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, green);
+    }
+}
+for (let x=0;x<w;x++){
+        putPixel(x+posx,5*h/8+posy, darkgreen);
+    }
+for (let y=5*h/8+posy+1;y<h;y++){
+    for (let x=0;x<w;x++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+
+posx+=w;
+// pos5, diagonal 0 to 1 ground
+for (let y=0;y<h;y++){
+    for (let x=h-1-y;x<w;x++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+
+posx+=w;
+// pos6, diagonal 1:1 ground walkable
+for (let x=0;x<w;x++){
+    
+    for (let y=h-1-x;y<h-1-x+h/8;y++){
+            putPixel(x+posx,y+posy, green);
+    }
+    putPixel(x+posx,h-1-x+h/8, darkgreen);
+    for (let y=h-x+h/8;y<h;y++){
+            putPixel(x+posx,y+posy, brown);
+    }
+
+}
+
+posx+=w;
+// pos7-8, diagonal 0 to 1/2 ground
+for (let x=0;x<w*2;x++){
+    for (let y=h-(x>>1);y<h;y++){
+        putPixel(x+posx,y+posy, brown);
+    }
+}
+
+posx+=2*w;
+// pos9-10, diagonal 0 to 1/2 ground walkable
+for (let x=0;x<w*2;x++){
+    for (let y=h-(x>>1);y<h-(x>>1)+h/8;y++){
+        putPixel(x+posx,y+posy, green);
+    }
+    putPixel(x+posx,h-(x>>1)+h/8, darkgreen);
+    for (let y=h-(x>>1)+h/8;y<h;y++){
+            putPixel(x+posx,y+posy, brown);
+    }
+}
+
+
+// Draw image data to the canvas
+ctx.putImageData(imageData, 0, 0);
+
+    </script>
+</body>
+</html>

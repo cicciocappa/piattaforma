@@ -1,0 +1,58 @@
+- la camera segue il protonista
+- una MAPPA è composta da SETTORI rettangolari posizionati in modo sparso
+- ogni settore è composto da uno o più PIANI a diversa profondità per l'effetto parallasse
+
+
+
+algoritmo di visualizzazione:
+
+si parte dalle coordinate del protagonista
+
+charX - charY
+
+
+la camera segue il protagonista
+
+
+per camera si intende le coordinate del rettangolo da visualizzare
+
+  +--------------------------+
+  |                          |
+  |                          |
+  |                          |
+  |                          |
+  |                          |
+  +--------------------------+
+
+all'inizio la camera viene posizionata in modo che il protagonista appaia al centro dello schermo
+quando si aggiorna la posizione del protagonista,
+se questo esce dal rettangolo "centrale" si aggiorna anche la posizione della camera
+la camera però non deve mai visualizzare aree esterne alla MAPPA
+
+a partire dalle coordinate della camera, si determina il settore visualizzato
+ad ogni settore sono associate le entità presenti (nemici, collezionabili, ecc)
+
+per ogni PIANO presente nel settore
+si aggiustano le coordinate per il fattore di parallasse (i piani sullo sfondo hanno un fattore < 1 e quindi scorrono più lentamente)
+si determina quale parte del settore va visualizzato a schermo sotto forma di tile
+deve essere possibile visualizzare le tile di due settori adiacenti
+
+si visualizzano il protagonista e le entità
+le coordinate dello sprite pari alle coordinate dell'entità meno le coordinate della camera
+
+sullo schermo sono visualizzate W per H tile (attualmente 20x15)
+
+facciamo una prova
+
+immaginiamo una mappa composta da 3 settori, in una grigia 2x2
+
+[ 0,0 ][1,0]
+[ 0,1 ][1,1]
+
+immaginiamo che ogni settore sia composto da 80x50 tile in primo PIANO
+in tutto la mappa è quindi 160x100 tile, cioè 5120 x 3200 pixel
+quindi la camera può andare da 0-0 fino a 5120-640 e 3000-480
+
+per calcolare il settore, prendo le coordinate e le divido per 80*32 e per 50*32
+
+
