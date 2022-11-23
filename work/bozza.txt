@@ -56,3 +56,12 @@ quindi la camera può andare da 0-0 fino a 5120-640 e 3000-480
 per calcolare il settore, prendo le coordinate e le divido per 80*32 e per 50*32
 
 
+formato file mappa
+il numero di livelli è fisso
+quindi mettiamo per primo quello
+poi elenchiamo i fattori di parallasse e le dimensioni del settore
+poi i settori con i dati
+che succede quando un settore è più piccolo dello schermo?
+nell'esempio un settore è 80x50 in primo PIANO
+con un fattore di parasse 0.1, diventano 8 e 5
+e non ha senso...

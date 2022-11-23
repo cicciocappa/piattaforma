@@ -192,8 +192,8 @@ export const Renderer = {
 
         
         for (let k=0;k<Game.layers.length;++k){
-            const xc = Math.floor(Game.camera.x*Game.layers[k].parallax);
-            const yc = Math.floor(Game.camera.y*Game.layers[k].parallax);
+            const xc = Math.floor(Game.camera.x*Game.layers[k].xparallax);
+            const yc = Math.floor(Game.camera.y*Game.layers[k].yparallax);
             const xtile = Math.floor(xc / 32);
             const xpos = xc % 32;
             const ytile = Math.floor(yc / 32);
@@ -203,7 +203,13 @@ export const Renderer = {
                 const data = [];
                 for (let i = 0; i < 21; i++) {
                     for (let j = 0; j < 16; j++) {
-                        const n = Game.layers[k].data[80 * (ytile + j) + xtile+i];
+                        const tx = xtile+i;
+                        const ty = ytile + j;
+                        const sx = Math.floor(tx/Game.layers[k].SECTOR_WIDTH);
+                        const sy = Math.floor(ty/Game.layers[k].SECTOR_HEIGHT);
+                        const rtx = tx%Game.layers[k].SECTOR_WIDTH;
+                        const rty = ty%Game.layers[k].SECTOR_HEIGHT;
+                        const n = Game.layers[k].sector[sy<<8+sx].data[Game.layers[k].SECTOR_WIDTH * rty + rtx];
 
                         data.push(n, n, n, n, n, n);
 
