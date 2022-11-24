@@ -51,7 +51,7 @@ immaginiamo una mappa composta da 3 settori, in una grigia 2x2
 
 immaginiamo che ogni settore sia composto da 80x50 tile in primo PIANO
 in tutto la mappa è quindi 160x100 tile, cioè 5120 x 3200 pixel
-quindi la camera può andare da 0-0 fino a 5120-640 e 3000-480
+quindi la camera può andare da 0-0 fino a 5120-32*21 e 3200-16*32
 
 per calcolare il settore, prendo le coordinate e le divido per 80*32 e per 50*32
 
@@ -65,3 +65,16 @@ che succede quando un settore è più piccolo dello schermo?
 nell'esempio un settore è 80x50 in primo PIANO
 con un fattore di parasse 0.1, diventano 8 e 5
 e non ha senso...
+allora i settori hanno sempre le stesse dimensioni, ma ce ne sono di meno, perché coprono più pixel?
+pensiamo alle dimensioni in pixel...
+80x32x2= 5120 pixel coperti
+50x32x2 = 3200 pixel coperti
+
+con parallasse 0.1
+sono 512x320
+e vengono coperti con un solo settore...
+
+quindi la logica è layer->settori
+quindi la mappa deve prima indicare i layer e per ciascun layer i settori necessari
+
+
